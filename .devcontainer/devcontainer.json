@@ -1,0 +1,51 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "whatsmyip",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			// any arguments to pass to docker when building the image
+		}
+	},
+	//
+	// Container Environment Vars
+	"containerEnv": {
+		"DEBFULLNAME": "${localEnv:DEBFULLNAME}",
+		"DEBEMAIL": "${localEnv:DEBEMAIL}",
+		"GITEA_SERVER_URL": "https://git.hedgerows.org.uk/",
+		"GITEA_SERVER_TOKEN": "${localEnv:GITEA_SERVER_TOKEN}",
+		"GITEA_SERVER_USER": "${localEnv:GITEA_SERVER_USER}"
+	},
+	//
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {},
+	//
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [],
+	//
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "",
+	//
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			// vs code extensions to be installed in the container
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"shakram02.bash-beautify",
+				"ms-vscode.makefile-tools",
+				"mhutchie.git-graph",
+				"donjayamanne.githis",
+				"actboy168.tasks"
+			]
+		}
+	},
+	//
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root",
+	//
+	// Mount local volumes in the devcontainer
+	"mounts": []
+}

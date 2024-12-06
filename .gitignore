@@ -1,0 +1,20 @@
+# don't commit build files
+debian/whatsmyip
+whatsmyip
+# don't commit the changelog - we generate this automatically when needed
+debian/changelog
+builddeps
+
+# generic ignores
+debhelper-build-stamp
+.DS_Store
+.debhelper
+*.deb
+*.dsc
+*.build
+*.buildinfo
+*.changes
+*.tar.gz
+*.log
+*.substvars
+debian/files

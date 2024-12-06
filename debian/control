@@ -1,0 +1,20 @@
+Source: whatsmyip
+Maintainer: Jon Davies <jon@hedgerows.org.uk>
+Section: net
+Priority: optional
+Build-Depends: debhelper-compat (=13)
+Standards-Version: 4.6.2
+Vcs-Browser: https://git.hedgerows.org.uk/jon-hedgerows/whatsmyip
+Vcs-Git: https://git.hedgerows.org.uk/jon-hedgerows/whatsmyip.git
+Homepage: https://git.hedgerows.org.uk/jon-hedgerows/whatsmyip/wiki/Home
+Rules-Requires-Root: no
+
+Package: whatsmyip
+Architecture: all
+Depends: ${misc:Depends}
+Description: determine the current external IP address
+ usage: whatsmyip [options]
+ This initiates a trace with Cloudflare, and uses the data returned to
+ determine the external IP address in use. If multiple external IPs are
+ available then this script cannot determine all of these, and may give
+ inconsistent results.

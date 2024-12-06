@@ -1,0 +1,20 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: whatsmyip
+Upstream-Contact: Jon Davies <jon@hedgerows.org.uk>
+Source: https://git.hedgerows.org.uk/jon-hedgerows/whatsmyip/
+
+Files: *
+Copyright: 2024, Jon Davies <jon@hedgerows.org.uk>
+License: GPL-2+
+
+Files: debian/whatsmyip/usr/share/doc/whatsmyip/*
+Copyright: 2024, Jon Davies <jon@hedgerows.org.uk>
+License: GPL-2+
+
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 2 dated June, 1991, or (at
+ your option) any later version.
+ On Debian systems, the complete text of version 2 of the GNU General
+ Public License can be found in '/usr/share/common-licenses/GPL-2'.

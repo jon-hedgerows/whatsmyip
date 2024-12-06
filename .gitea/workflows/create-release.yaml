@@ -1,0 +1,83 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  VERSION: ${{ github.ref_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-act-deb
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4.1.1
+        with:
+          path: "repo"
+          fetch-depth: 0
+
+      - name: Import GPG key
+        id: gpgkey
+        uses: crazy-max/ghaction-import-gpg@v6.1.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Install build dependencies
+        run: |
+          # this assumes that build tools are already installed in the runner
+          apt -yy update
+          # this takes the Build-Depends lines, strips out versions in brackets (naively assuming the current version are ok), and stripping out commas
+          cd ${{ github.workspace }}/repo
+          apt -yy install $(grep ^Build-Depends: debian/control | cut -f2- -d: | sed 's/([^)]*)//g' | sed 's/,//')
+
+      - name: Check environment
+        run: set
+
+      - name: Check names
+        run: |
+          export NAME="${{ steps.gpgkey.outputs.name }}"
+          export EMAIL="${{ steps.gpgkey.outputs.email }}"
+          set
+
+      - name: Create a debian changelog
+        run: |
+          export NAME="${{ steps.gpgkey.outputs.name }}"
+          export EMAIL="${{ steps.gpgkey.outputs.email }}"
+          export VERSION="${GITHUB_REF_NAME#v}"
+          cd ${{ github.workspace }}/repo
+          echo DEBUG: repo dir: $(pwd)
+          rm -f debian/changelog
+          dch --create --newversion=$VERSION --distribution=stable --package $(grep Package: debian/control | head -n 1 | awk '{print $2}') "see $(grep Homepage: debian/control | head -n 1 | awk '{print $2}') for history"
+          echo DEBUG: changelog contents:
+          cat debian/changelog
+
+      - name: Build package
+        run: |
+          export NAME="${{ steps.gpgkey.outputs.name }}"
+          export EMAIL="${{ steps.gpgkey.outputs.email }}"
+          cd ${{ github.workspace }}/repo
+          gbp buildpackage --git-ignore-branch
+
+      - name: Upload deb to repository
+        run: |
+          UPLOAD="${{ github.server_url }}/api/packages/${{ github.actor }}/debian/pool/stable/main/upload"
+          echo 'Uploading all the .deb file(s) to the repository at'
+          echo $UPLOAD
+          for debfile in *.deb ; do \
+            echo ...uploading $debfile ; \
+            curl --user "${{ github.actor }}:${{ secrets.PKG_TOKEN }}" --upload-file "$debfile" $UPLOAD ; \
+          done
+
+      - name: Create Release with build results
+        uses: akkuman/gitea-release-action@v1.3.0
+        with:
+          files: |-
+            *.deb
+            *.build
+            *.buildinfo
+            *.changes
+            *.dsc
+            *.tar.xz

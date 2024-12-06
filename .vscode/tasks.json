@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clean",
+            "command": "make maintainer-clean",
+            "type": "shell",
+            "args": [],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "showReuseMessage": false
+            },
+            "group": "build"
+        },
+        {
+            "label": "Snapshot",
+            "command": "sudo chmod a+w /workspaces ; make snapshot",
+            "type": "shell",
+            "args": [],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "showReuseMessage": false
+            },
+            "group": "build"
+        },
+    ]
+}
